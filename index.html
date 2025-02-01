@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Machine Data</title>
+  <!-- Load A-Frame -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <!-- Load AR.js -->
+  <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    /* Styles for UI Overlay */
+    .overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- AR Scene -->
+  <a-scene embedded arjs>
+    <a-marker type="pattern" url="pattern-marker.patt">
+      <!-- AR Box -->
+    
+      <a-entity 
+      gltf-model="url(factory_machine.glb)" 
+      scale="0.2 0.2 0.2"  
+          position="0 0 0" 
+          rotation="0 0 0"
+    ></a-entity>
+    </a-marker>
+    <a-camera static></a-camera>
+  </a-scene>
+
+  <!-- UI Overlay for Machine Data -->
+  <div class="overlay">
+    <h2>Machine Status</h2>
+    <p id="temperature">🌡 Temperature: 75.3°C</p>
+    <p id="vibration">⚙ Vibration: 0.02 m/s²</p>
+    <p id="pressure">🛠 Pressure: 5.6 bar</p>
+  </div>
+
+  <script>
+    // Simulate dynamic data
+    let machineData = {
+      temperature: 75.3,
+      vibration: 0.02,
+      pressure: 5.6,
+    };
+
+    // Update function for the overlay and AR text
+    function updateMachineData() {
+      machineData.temperature = (75 + Math.random() * 5).toFixed(2);
+      machineData.vibration = (0.01 + Math.random() * 0.03).toFixed(3);
+      machineData.pressure = (5 + Math.random() * 2).toFixed(2);
+
+      // Update UI Overlay
+      document.getElementById("temperature").textContent = `🌡 Temperature: ${machineData.temperature}°C`;
+      document.getElementById("vibration").textContent = `⚙ Vibration: ${machineData.vibration} m/s²`;
+      document.getElementById("pressure").textContent = `🛠 Pressure: ${machineData.pressure} bar`;
+
+      // Update AR Text
+      document.getElementById("machineDataText").setAttribute("value", `🌡 Temp: ${machineData.temperature}°C\n⚙ Vib: ${machineData.vibration} m/s²\n🛠 Pressure: ${machineData.pressure} bar`);
+    }
+
+    // Update data every 2 seconds
+    setInterval(updateMachineData, 2000);
+  </script>
+</body>
+</html>
